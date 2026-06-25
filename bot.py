@@ -1,22 +1,37 @@
 from telegram import Update
-from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
+from telegram.ext import Application, CommandHandler, MessageHandler, ContextTypes, filters
+import os
 
-BOT_TOKEN = "PUT_YOUR_TELEGRAM_BOT_TOKEN_HERE"
+BOT_TOKEN = "8201369697:AAFuqSILz0C6WTV2iqK2hwRe164HXChKaLE
+Keep y"
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "أهلاً بك 👋\n"
-        "أرسل صورة أو رسالة دعم وسأساعدك بصياغة رد مناسب بالإنجليزية."
+        "أهلاً بك 👋\n\n"
+        "أرسل رسالة الدعم أو لقطة شاشة وسأساعدك بفهمها وصياغة رد مهني باللغة الإنجليزية."
     )
 
-async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_text = update.message.text
+
     await update.message.reply_text(
-        "تم استلام الرسالة. سيتم تحليلها وإعداد رد مناسب."
+        f"تم استلام الرسالة:\n\n{user_text}\n\n"
+        "سيتم لاحقاً ربط البوت بالذكاء الاصطناعي لتحليلها."
     )
 
-app = Application.builder().token(BOT_TOKEN).build()
+async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        "تم استلام الصورة بنجاح 📷"
+    )
 
-app.add_handler(CommandHandler("start", start))
-app.add_handler(MessageHandler(filters.TEXT | filters.PHOTO, handle_message))
+def main():
+    app = Application.builder().token(BOT_TOKEN).build()
 
-app.run_polling()
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
+    app.add_handler(MessageHandler(filters.PHOTO, handle_photo))
+
+    app.run_polling()
+
+if __name__ == "__main__":
+    main()
