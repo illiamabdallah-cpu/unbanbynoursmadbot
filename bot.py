@@ -2,8 +2,7 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, ContextTypes, filters
 import os
 
-BOT_TOKEN = "8201369697:AAFuqSILz0C6WTV2iqK2hwRe164HXChKaLE
-Keep y"
+BOT_TOKEN = "AAFuqSILz0C6WTV2iqK2hwRe164HXChKaLE"
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
