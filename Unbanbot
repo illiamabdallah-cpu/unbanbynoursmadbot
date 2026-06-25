@@ -1,0 +1,58 @@
+import os
+from telegram import ReplyKeyboardMarkup, Update
+from telegram.ext import (
+    Application,
+    CommandHandler,
+    MessageHandler,
+    ContextTypes,
+    filters,
+)
+
+TOKEN = os.getenv("TOKEN")
+
+FORMULAS = {
+    f"صيغة {i}": f"اكتب هنا محتوى صيغة رقم {i}"
+    for i in range(1, 21)
+}
+
+keyboard = [
+    ["صيغة 1", "صيغة 2", "صيغة 3"],
+    ["صيغة 4", "صيغة 5", "صيغة 6"],
+    ["صيغة 7", "صيغة 8", "صيغة 9"],
+    ["صيغة 10", "صيغة 11", "صيغة 12"],
+    ["صيغة 13", "صيغة 14", "صيغة 15"],
+    ["صيغة 16", "صيغة 17", "صيغة 18"],
+    ["صيغة 19", "صيغة 20"],
+    ["رجوع"]
+]
+
+reply_markup = ReplyKeyboardMarkup(
+    keyboard,
+    resize_keyboard=True
+)
+
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        "اختر الصيغة:",
+        reply_markup=reply_markup
+    )
+
+async def message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    text = update.message.text
+
+    if text == "رجوع":
+        await start(update, context)
+        return
+
+    if text in FORMULAS:
+        await update.message.reply_text(FORMULAS[text])
+    else:
+        await update.message.reply_text("اختر من القائمة.")
+
+app = Application.builder().token(TOKEN).build()
+
+app.add_handler(CommandHandler("start", start))
+app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, message))
+
+print("Bot Started...")
+app.run_polling()
