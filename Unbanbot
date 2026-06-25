@@ -8,7 +8,7 @@ from telegram.ext import (
     filters,
 )
 
-TOKEN = os.getenv("TOKEN")
+TOKEN = os.getenv("AAFuqSILz0C6WTV2iqK2hwRe164HXChKaLE")
 
 FORMULAS = {
     f"صيغة {i}": f"اكتب هنا محتوى صيغة رقم {i}"
